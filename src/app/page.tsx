@@ -4,7 +4,7 @@ import ProgressBar from './components/ProgressBar';
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="h-[100dvh] overflow-hidden">
       {/* Header */}
       <header className="w-full bg-[#102147] shadow-sm py-4">
         <div className="container mx-auto px-4">
@@ -22,10 +22,10 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto max-w-7xl">
-        <div className="flex min-h-[calc(100vh-4rem)]">
+      <div className="container mx-auto max-w-7xl h-[calc(100dvh-4rem)]">
+        <div className="flex h-full">
           {/* Left Section - Form */}
-          <div className="w-full md:w-1/2 px-4 md:px-16 py-6 md:py-12 max-w-2xl mx-auto md:max-w-none">
+          <div className="w-full md:w-1/2 px-4 md:px-16 py-6 md:py-12 max-w-2xl mx-auto md:max-w-none overflow-y-auto">
             <div className="mb-6 md:mb-8">
               <ProgressBar currentStep={1} totalSteps={4} />
             </div>
