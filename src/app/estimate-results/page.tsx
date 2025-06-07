@@ -3,10 +3,12 @@
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 import Image from "next/image";
 import { useFlowNavigation } from '../hooks/useFlowNavigation';
+import { useFlow } from '../context/FlowContext';
 import ProgressBar from '../components/ProgressBar';
 
 export default function EstimateResults() {
-  const { navigateNext } = useFlowNavigation();
+  const { navigateNext, getCurrentStep } = useFlowNavigation();
+  const { totalSteps } = useFlow();
 
   const handleNext = () => {
     navigateNext();
@@ -29,7 +31,7 @@ export default function EstimateResults() {
               />
             </div>
             <div className="md:hidden">
-              <ProgressBar className="mx-4" />
+              <ProgressBar className="mx-4" currentStep={getCurrentStep()} totalSteps={totalSteps} />
             </div>
           </div>
         </div>
@@ -44,7 +46,7 @@ export default function EstimateResults() {
               <div className="space-y-4 md:space-y-8">
                 {/* Progress Bar */}
                 <div className="hidden md:block">
-                  <ProgressBar />
+                  <ProgressBar currentStep={getCurrentStep()} totalSteps={totalSteps} />
                 </div>
                 
                 {/* Content Container */}
