@@ -27,7 +27,9 @@ export default function SignUpForm() {
 
   return (
     <div className="max-w-lg mx-auto">
-      <ProgressBar currentStep={step} totalSteps={3} />
+      <div className="hidden md:block">
+        <ProgressBar currentStep={step} totalSteps={3} />
+      </div>
 
       <form onSubmit={handleSubmit}>
         <h1 className="text-3xl font-bold mb-6">

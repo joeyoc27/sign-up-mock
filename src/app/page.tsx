@@ -8,15 +8,20 @@ export default function Home() {
       {/* Header */}
       <header className="w-full bg-[#102147] shadow-sm py-4 flex-shrink-0">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center">
-            <Image
-              src="/vrbo.png"
-              alt="VRBO Logo"
-              width={120}
-              height={40}
-              className="h-8 w-auto"
-              priority
-            />
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-center">
+              <Image
+                src="/vrbo.png"
+                alt="VRBO Logo"
+                width={120}
+                height={40}
+                className="h-8 w-auto"
+                priority
+              />
+            </div>
+            <div className="md:hidden">
+              <ProgressBar currentStep={1} totalSteps={4} className="mx-4" />
+            </div>
           </div>
         </div>
       </header>
@@ -26,7 +31,7 @@ export default function Home() {
         <div className="absolute inset-0 flex">
           {/* Left Section - Form */}
           <div className="w-full md:w-1/2 px-4 md:px-16 py-6 md:py-12 max-w-2xl mx-auto md:max-w-none overflow-y-auto">
-            <div className="mb-6 md:mb-8">
+            <div className="hidden md:block mb-6 md:mb-8">
               <ProgressBar currentStep={1} totalSteps={4} />
             </div>
             <div>
