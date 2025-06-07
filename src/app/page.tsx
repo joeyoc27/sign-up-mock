@@ -1,5 +1,6 @@
 import Image from "next/image";
 import PropertyForm from './components/PropertyForm';
+import ProgressBar from './components/ProgressBar';
 
 export default function Home() {
   return (
@@ -24,9 +25,14 @@ export default function Home() {
       <div className="flex min-h-[calc(100vh-4rem)]">
         {/* Left Section - Form */}
         <div className="w-1/2 px-12 py-8">
-          <h1 className="text-4xl font-medium mb-4">Tell us about your place</h1>
-          <p className="text-xl mb-8">With a few details, we can show you an estimate of how much you could earn with Vrbo.</p>
-          <PropertyForm />
+          <div className="mb-8">
+            <ProgressBar currentStep={1} totalSteps={4} />
+          </div>
+          <div>
+            <h1 className="text-4xl font-medium mb-4">Tell us about your place</h1>
+            <p className="text-xl mb-8">With a few details, we can show you an estimate of how much you could earn with Vrbo.</p>
+            <PropertyForm />
+          </div>
         </div>
 
         {/* Right Section - House Image */}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import ProgressBar from './ProgressBar';
 
 export default function SignUpForm() {
   const [step, setStep] = useState(1);
@@ -26,14 +27,7 @@ export default function SignUpForm() {
 
   return (
     <div className="max-w-lg mx-auto">
-      <div className="mb-8">
-        <div className="h-2 bg-gray-200 rounded-full">
-          <div 
-            className="h-2 bg-green-500 rounded-full transition-all duration-300"
-            style={{ width: `${(step / 3) * 100}%` }}
-          />
-        </div>
-      </div>
+      <ProgressBar currentStep={step} totalSteps={3} />
 
       <form onSubmit={handleSubmit}>
         <h1 className="text-3xl font-bold mb-6">

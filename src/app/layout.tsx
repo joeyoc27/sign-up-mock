@@ -50,8 +50,8 @@ const centrano2 = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Sign Up | Housecall Pro",
-  description: "Sign up for Housecall Pro's services",
+  title: "Sign Up | Vrbo",
+  description: "Sign up to list your property on Vrbo",
 };
 
 export default function RootLayout({
