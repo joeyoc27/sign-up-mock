@@ -1,12 +1,18 @@
+'use client';
+
 import React from 'react';
+import { useFlow } from '../context/FlowContext';
+import { useFlowNavigation } from '../hooks/useFlowNavigation';
 
 interface ProgressBarProps {
-  currentStep: number;
-  totalSteps: number;
   className?: string;
 }
 
-export default function ProgressBar({ currentStep, totalSteps, className = '' }: ProgressBarProps) {
+export default function ProgressBar({ className = '' }: ProgressBarProps) {
+  const { totalSteps } = useFlow();
+  const { getCurrentStep } = useFlowNavigation();
+  const currentStep = getCurrentStep();
+
   return (
     <div className={`md:mb-8 ${className}`}>
       <div className="h-2 bg-gray-200 rounded-full">

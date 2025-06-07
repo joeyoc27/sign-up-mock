@@ -1,38 +1,35 @@
 'use client';
 
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
+import { useFlowNavigation } from '../hooks/useFlowNavigation';
+import ProgressBar from '../components/ProgressBar';
 
 export default function OTP() {
-  const router = useRouter();
-  const [countdown, setCountdown] = useState(28);
+  const { navigateNext } = useFlowNavigation();
+  const [countdown, setCountdown] = useState(30);
   const [canResend, setCanResend] = useState(false);
 
   useEffect(() => {
     if (countdown > 0) {
-      const timer = setTimeout(() => {
-        setCountdown(countdown - 1);
-      }, 1000);
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);
     } else {
       setCanResend(true);
     }
   }, [countdown]);
 
-  const handleResendCode = () => {
-    if (canResend) {
-      // Reset the countdown and disable resend
-      setCountdown(28);
-      setCanResend(false);
-      // TODO: Implement actual code resend logic here
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    navigateNext();
   };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    router.push("/welcome");
+  const handleResendCode = () => {
+    if (canResend) {
+      setCountdown(30);
+      setCanResend(false);
+      // Add logic to resend code
+    }
   };
 
   return (
@@ -40,15 +37,20 @@ export default function OTP() {
       {/* Header */}
       <header className="w-full bg-[#102147] shadow-sm py-4 flex-shrink-0">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center">
-            <Image
-              src="/vrbo.png"
-              alt="VRBO Logo"
-              width={120}
-              height={40}
-              className="h-8 w-auto"
-              priority
-            />
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-center">
+              <Image
+                src="/vrbo.png"
+                alt="VRBO Logo"
+                width={120}
+                height={40}
+                className="h-8 w-auto"
+                priority
+              />
+            </div>
+            <div className="md:hidden">
+              <ProgressBar className="mx-4" />
+            </div>
           </div>
         </div>
       </header>
@@ -57,14 +59,15 @@ export default function OTP() {
       <div className="flex-1 relative">
         <div className="absolute inset-0 flex">
           <div className="w-full max-w-xl mx-auto px-6 py-12 overflow-y-auto">
+            <div className="hidden md:block mb-8">
+              <ProgressBar />
+            </div>
+
             <div className="space-y-6">
               <div>
-                <h1 className="text-[32px] font-medium leading-tight text-[#1f1f2d]">
-                  Let's confirm it's you
-                </h1>
-                <p className="mt-4 text-lg text-gray-600">
-                  Enter the 6-digit verification code we just sent to:<br />
-                  <span className="font-medium">negof5638@hazhab.com</span>
+                <h1 className="text-3xl md:text-4xl font-medium mb-4">Enter verification code</h1>
+                <p className="text-lg text-gray-600">
+                  We've sent a 6-digit code to your email address. Enter it below to continue.
                 </p>
               </div>
 
@@ -84,43 +87,22 @@ export default function OTP() {
                       maxLength={6}
                       className="block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Enter verification code"
+                      required
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="flex items-start gap-3">
-                    <input
-                      type="checkbox"
-                      className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="text-sm text-gray-600">
-                      Keep me signed in<br />
-                      This is for personal devices only. Don't check this on shared devices to keep your account secure.
-                    </span>
-                  </label>
-                </div>
-
-                <div className="space-y-3">
-                  <button
-                    type="submit"
-                    className="w-full rounded-full bg-[#2557a7] py-3 px-4 text-lg font-medium text-white hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2"
-                  >
-                    Continue
-                  </button>
-                  
-                  <button
-                    type="button"
-                    className="w-full rounded-full border border-gray-300 bg-white py-3 px-4 text-lg font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                  >
-                    Cancel
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  className="w-full rounded-full bg-[#2557a7] py-3 px-4 text-lg font-medium text-white hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2"
+                >
+                  Verify and continue
+                </button>
               </form>
 
               <div className="space-y-3 text-center">
                 <p className="text-sm text-gray-600">
-                  Check junk mail if it's not in your inbox
+                  Check your spam folder if you don't see the email
                 </p>
                 <button 
                   type="button"

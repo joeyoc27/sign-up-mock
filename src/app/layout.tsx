@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import localFont from 'next/font/local';
 import "./globals.css";
 import 'mapbox-gl/dist/mapbox-gl.css';
+import DevToolbar from '@/components/DevToolbar';
+import { FlowProvider } from './context/FlowContext';
 
 const centrano2 = localFont({
   src: [
@@ -63,7 +65,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${centrano2.className} min-h-screen bg-gray-50`}>
-        {children}
+        <FlowProvider>
+          {children}
+          <DevToolbar />
+        </FlowProvider>
       </body>
     </html>
   );

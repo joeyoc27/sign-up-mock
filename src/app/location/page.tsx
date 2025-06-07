@@ -6,6 +6,7 @@ import ProgressBar from '../components/ProgressBar';
 import AddressTypeahead from '../components/AddressTypeahead';
 import LocationMap from '../components/LocationMap';
 import { useState, useEffect, useRef } from 'react';
+import { useFlowNavigation } from '../hooks/useFlowNavigation';
 
 // Helper function to parse formatted address
 const parseAddress = (formattedAddress: string) => {
@@ -40,6 +41,7 @@ const parseAddress = (formattedAddress: string) => {
 
 export default function Location() {
   const router = useRouter();
+  const { navigateNext } = useFlowNavigation();
   const [selectedAddress, setSelectedAddress] = useState('');
   const [isManualMode, setIsManualMode] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -137,15 +139,7 @@ export default function Location() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Combine address fields if in manual mode
-    if (isManualMode) {
-      const fullAddress = `${manualAddress.street}, ${manualAddress.city}, ${manualAddress.state} ${manualAddress.zipCode}, ${manualAddress.country}`;
-      setSelectedAddress(fullAddress);
-    }
-    
-    // Navigate to next page after form submission
-    router.push("/next-step");
+    navigateNext();
   };
 
   return (
@@ -165,7 +159,7 @@ export default function Location() {
               />
             </div>
             <div className="md:hidden">
-              <ProgressBar currentStep={2} totalSteps={4} className="mx-4" />
+              <ProgressBar className="mx-4" />
             </div>
           </div>
         </div>
@@ -178,7 +172,7 @@ export default function Location() {
           {/* Left Section - Form */}
           <div className="w-1/2 px-16 py-12 max-w-2xl overflow-y-auto">
             <div className="mb-8">
-              <ProgressBar currentStep={2} totalSteps={4} />
+              <ProgressBar />
             </div>
             <div>
               <h1 className="text-4xl font-medium mb-4">Where's your place located?</h1>

@@ -2,14 +2,14 @@
 
 import { InfoCircledIcon } from '@radix-ui/react-icons';
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useFlowNavigation } from '../hooks/useFlowNavigation';
 import ProgressBar from '../components/ProgressBar';
 
 export default function EstimateResults() {
-  const router = useRouter();
+  const { navigateNext } = useFlowNavigation();
 
   const handleNext = () => {
-    router.push("/welcome");
+    navigateNext();
   };
 
   return (
@@ -29,7 +29,7 @@ export default function EstimateResults() {
               />
             </div>
             <div className="md:hidden">
-              <ProgressBar currentStep={2} totalSteps={4} className="mx-4" />
+              <ProgressBar className="mx-4" />
             </div>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function EstimateResults() {
               <div className="space-y-4 md:space-y-8">
                 {/* Progress Bar */}
                 <div className="hidden md:block">
-                  <ProgressBar currentStep={2} totalSteps={4} />
+                  <ProgressBar />
                 </div>
                 
                 {/* Content Container */}
@@ -70,41 +70,19 @@ export default function EstimateResults() {
                     </p>
                   </div>
 
-                  {/* Next Steps Section */}
-                  <div className="space-y-2 md:space-y-3">
-                    <h1 className="text-[#2D2D2D] text-2xl md:text-3xl font-semibold">
-                      We'll create your listing on the next page
-                    </h1>
-                    <p className="text-gray-600 text-lg md:text-xl">
-                      Welcome travelers and start earning
-                    </p>
-                  </div>
-
-                  {/* Next Button - Desktop */}
-                  <div className="hidden md:block pt-6">
-                    <button
-                      onClick={handleNext}
-                      className="w-full rounded-full bg-[#2557a7] py-3 px-8 text-lg font-medium text-white hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2 transition-colors"
-                    >
-                      List your property
-                    </button>
-                  </div>
+                  {/* Next Button */}
+                  <button
+                    onClick={handleNext}
+                    className="w-full bg-[#2557A7] text-white text-xl font-semibold py-4 rounded-full hover:bg-[#1e4585] transition-colors"
+                  >
+                    List your property
+                  </button>
                 </div>
-              </div>
-
-              {/* Next Button - Mobile */}
-              <div className="md:hidden pt-4">
-                <button
-                  onClick={handleNext}
-                  className="w-full rounded-full bg-[#2557a7] py-2.5 px-8 text-lg font-medium text-white hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2 transition-colors"
-                >
-                  List your property
-                </button>
               </div>
             </div>
           </div>
 
-          {/* Right Half - House Image */}
+          {/* Right Half - Image */}
           <div className="hidden md:block w-1/2 relative">
             <Image
               src="/house.jpg"

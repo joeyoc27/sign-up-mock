@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useFlowNavigation } from '../hooks/useFlowNavigation';
 
 export default function PropertyForm() {
   const [bedrooms, setBedrooms] = useState(0);
   const [bathrooms, setBathrooms] = useState(1);
+  const { navigateNext } = useFlowNavigation();
 
   const increment = (setter: (value: number) => void, value: number, max: number) => {
     if (value < max) {
@@ -20,6 +22,7 @@ export default function PropertyForm() {
 
   const handleNext = () => {
     console.log('Form submitted:', { bedrooms, bathrooms });
+    navigateNext();
   };
 
   return (
