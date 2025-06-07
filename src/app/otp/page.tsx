@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useState, useEffect } from 'react';
 import { useFlowNavigation } from '../hooks/useFlowNavigation';
+import { useFlow } from '../context/FlowContext';
 import ProgressBar from '../components/ProgressBar';
 
 export default function OTP() {
-  const { navigateNext } = useFlowNavigation();
+  const { navigateNext, getCurrentStep } = useFlowNavigation();
+  const { totalSteps } = useFlow();
   const [countdown, setCountdown] = useState(30);
   const [canResend, setCanResend] = useState(false);
 
@@ -49,7 +51,7 @@ export default function OTP() {
               />
             </div>
             <div className="md:hidden">
-              <ProgressBar className="mx-4" />
+              <ProgressBar className="mx-4" currentStep={getCurrentStep()} totalSteps={totalSteps} />
             </div>
           </div>
         </div>
@@ -60,7 +62,7 @@ export default function OTP() {
         <div className="absolute inset-0 flex">
           <div className="w-full max-w-xl mx-auto px-6 py-12 overflow-y-auto">
             <div className="hidden md:block mb-8">
-              <ProgressBar />
+              <ProgressBar currentStep={getCurrentStep()} totalSteps={totalSteps} />
             </div>
 
             <div className="space-y-6">

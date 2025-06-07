@@ -3,10 +3,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useFlowNavigation } from '../hooks/useFlowNavigation';
+import { useFlow } from '../context/FlowContext';
 import ProgressBar from '../components/ProgressBar';
 
 export default function Lead() {
-  const { navigateNext } = useFlowNavigation();
+  const { navigateNext, getCurrentStep } = useFlowNavigation();
+  const { totalSteps } = useFlow();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ export default function Lead() {
               />
             </div>
             <div className="md:hidden">
-              <ProgressBar className="mx-4" />
+              <ProgressBar className="mx-4" currentStep={getCurrentStep()} totalSteps={totalSteps} />
             </div>
           </div>
         </div>
@@ -41,7 +43,7 @@ export default function Lead() {
         <div className="absolute inset-0 flex">
           <div className="w-full md:w-1/2 px-6 md:px-16 py-6 md:py-12 overflow-y-auto">
             <div className="hidden md:block mb-8">
-              <ProgressBar />
+              <ProgressBar currentStep={getCurrentStep()} totalSteps={totalSteps} />
             </div>
             
             <div className="max-w-xl">
