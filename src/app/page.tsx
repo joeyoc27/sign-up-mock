@@ -22,28 +22,30 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <div className="flex min-h-[calc(100vh-4rem)]">
-        {/* Left Section - Form */}
-        <div className="w-1/2 px-12 py-8">
-          <div className="mb-8">
-            <ProgressBar currentStep={1} totalSteps={4} />
+      <div className="container mx-auto max-w-7xl">
+        <div className="flex min-h-[calc(100vh-4rem)]">
+          {/* Left Section - Form */}
+          <div className="w-full md:w-1/2 px-4 md:px-16 py-6 md:py-12 max-w-2xl mx-auto md:max-w-none">
+            <div className="mb-6 md:mb-8">
+              <ProgressBar currentStep={1} totalSteps={4} />
+            </div>
+            <div>
+              <h1 className="text-3xl md:text-4xl font-medium mb-3 md:mb-4">Tell us about your place</h1>
+              <p className="text-lg md:text-xl mb-6 md:mb-8">With a few details, we can show you an estimate of how much you could earn with Vrbo.</p>
+              <PropertyForm />
+            </div>
           </div>
-          <div>
-            <h1 className="text-4xl font-medium mb-4">Tell us about your place</h1>
-            <p className="text-xl mb-8">With a few details, we can show you an estimate of how much you could earn with Vrbo.</p>
-            <PropertyForm />
-          </div>
-        </div>
 
-        {/* Right Section - House Image */}
-        <div className="w-1/2 relative overflow-hidden">
-          <Image
-            src="/house.jpg"
-            alt="Beautiful vacation home"
-            fill
-            className="object-cover object-center"
-            priority
-          />
+          {/* Right Section - House Image */}
+          <div className="hidden md:block w-1/2 relative overflow-hidden">
+            <Image
+              src="/house.jpg"
+              alt="Beautiful vacation home"
+              fill
+              className="object-cover object-center"
+              priority
+            />
+          </div>
         </div>
       </div>
     </main>
