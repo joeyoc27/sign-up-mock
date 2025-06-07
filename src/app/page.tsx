@@ -4,9 +4,9 @@ import ProgressBar from './components/ProgressBar';
 
 export default function Home() {
   return (
-    <main className="h-[100dvh] overflow-hidden">
+    <main className="fixed inset-0 flex flex-col">
       {/* Header */}
-      <header className="w-full bg-[#102147] shadow-sm py-4">
+      <header className="w-full bg-[#102147] shadow-sm py-4 flex-shrink-0">
         <div className="container mx-auto px-4">
           <div className="flex justify-center">
             <Image
@@ -22,8 +22,8 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <div className="container mx-auto max-w-7xl h-[calc(100dvh-4rem)]">
-        <div className="flex h-full">
+      <div className="flex-1 relative">
+        <div className="absolute inset-0 flex">
           {/* Left Section - Form */}
           <div className="w-full md:w-1/2 px-4 md:px-16 py-6 md:py-12 max-w-2xl mx-auto md:max-w-none overflow-y-auto">
             <div className="mb-6 md:mb-8">
