@@ -3,6 +3,10 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
+// Add console log to check API key
+console.log('API Key available:', !!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
+console.log('API Key length:', process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.length);
+
 const DEFAULT_CENTER = {
   lat: 40.7128,
   lng: -74.0060
