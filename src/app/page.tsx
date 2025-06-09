@@ -28,28 +28,32 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="flex-1 relative">
-        <div className="absolute inset-0 flex">
-          {/* Left Section - Form */}
-          <div className="w-full md:w-1/2 px-4 md:px-16 py-6 md:py-12 max-w-2xl mx-auto md:max-w-none overflow-y-auto">
-            <div className="hidden md:block mb-6 md:mb-8">
-              <ProgressBar currentStep={1} totalSteps={4} />
+        <div className="absolute inset-0 flex justify-center">
+          <div className="flex w-full max-w-[1400px]">
+            {/* Left Section - Form */}
+            <div className="w-full md:w-1/2 px-4 md:pr-0 md:pl-24 py-6 md:py-12 overflow-y-auto">
+              <div className="max-w-md mx-auto">
+                <div className="hidden md:block mb-6 md:mb-8">
+                  <ProgressBar currentStep={1} totalSteps={4} />
+                </div>
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-medium mb-3 md:mb-4">Tell us about your place</h1>
+                  <p className="text-lg md:text-xl mb-6 md:mb-8">With a few details, we can show you an estimate of how much you could earn with Vrbo.</p>
+                  <PropertyForm />
+                </div>
+              </div>
             </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-medium mb-3 md:mb-4">Tell us about your place</h1>
-              <p className="text-lg md:text-xl mb-6 md:mb-8">With a few details, we can show you an estimate of how much you could earn with Vrbo.</p>
-              <PropertyForm />
-            </div>
-          </div>
 
-          {/* Right Section - House Image */}
-          <div className="hidden md:block w-1/2 relative overflow-hidden">
-            <Image
-              src="/house.jpg"
-              alt="Beautiful vacation home"
-              fill
-              className="object-cover object-center"
-              priority
-            />
+            {/* Right Section - House Image */}
+            <div className="hidden md:block w-1/2 relative overflow-hidden md:pl-0 md:pr-24">
+              <Image
+                src="/databack.png"
+                alt="Beautiful vacation home"
+                fill
+                className="object-contain object-center"
+                priority
+              />
+            </div>
           </div>
         </div>
       </div>

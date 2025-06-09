@@ -1,9 +1,16 @@
 'use client';
 
 import Image from "next/image";
-import Link from "next/link";
+import { useFlowNavigation } from '../hooks/useFlowNavigation';
+import { useFlow } from '../context/FlowContext';
 
 export default function Welcome() {
+  const { getNextPath } = useFlowNavigation();
+  const { totalSteps } = useFlow();
+
+  // getNextPath() will return null since welcome is the last step
+  const isLastStep = getNextPath() === null;
+
   return (
     <main className="fixed inset-0 flex flex-col">
       {/* Header */}
@@ -62,12 +69,16 @@ export default function Welcome() {
               </div>
 
               <div className="pt-6">
-                <Link
-                  href="/next-step"
-                  className="inline-block rounded-full bg-[#2557a7] py-3 px-8 text-lg font-medium text-white hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2"
+                <button
+                  disabled={isLastStep}
+                  className={`inline-block rounded-full py-3 px-8 text-lg font-medium text-white ${
+                    isLastStep 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-[#2557a7] hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2'
+                  }`}
                 >
                   Next
-                </Link>
+                </button>
               </div>
             </div>
           </div>

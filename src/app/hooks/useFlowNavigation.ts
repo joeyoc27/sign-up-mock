@@ -53,6 +53,7 @@ export function useFlowNavigation() {
 
   return {
     navigateNext,
-    getCurrentStep
+    getCurrentStep,
+    getNextPath
   };
 } 

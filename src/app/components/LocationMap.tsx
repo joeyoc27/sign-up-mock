@@ -11,7 +11,9 @@ const DEFAULT_CENTER = {
 const mapContainerStyle = {
   width: '100%',
   height: '100%',
-  minHeight: '400px'
+  minHeight: '400px',
+  borderRadius: '8px',
+  overflow: 'hidden'
 };
 
 const defaultOptions = {
