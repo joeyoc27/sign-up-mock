@@ -31,7 +31,7 @@ const flowPaths = {
 const FlowContext = createContext<FlowContextType | undefined>(undefined);
 
 export function FlowProvider({ children }: { children: ReactNode }) {
-  const [activeFlow, setActiveFlow] = useState<FlowType>(null);
+  const [activeFlow, setActiveFlow] = useState<FlowType>('Core');
   const router = useRouter();
 
   const resetFlow = () => {
@@ -39,7 +39,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
   };
 
   const currentStep = 1; // This will be managed by individual pages
-  const totalSteps = activeFlow ? flowPaths[activeFlow].total : 4; // Default to 4 steps
+  const totalSteps = activeFlow ? flowPaths[activeFlow].total : flowPaths.Core.total;
 
   return (
     <FlowContext.Provider 

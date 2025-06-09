@@ -5,9 +5,18 @@ import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
 
 const flowPaths = {
-  Core: ['/location', '/lead', '/estimate-results', '/welcome'],
-  AAP: ['/location', '/welcome'],
-  UPL: ['/location', '/estimate-results', '/email', '/otp', '/welcome']
+  Core: {
+    steps: ['/location', '/lead', '/estimate-results', '/welcome'],
+    total: 5
+  },
+  AAP: {
+    steps: ['/location', '/welcome'],
+    total: 3
+  },
+  UPL: {
+    steps: ['/location', '/estimate-results', '/email', '/otp', '/welcome'],
+    total: 6
+  }
 };
 
 export function useFlowNavigation() {
@@ -16,32 +25,30 @@ export function useFlowNavigation() {
   const pathname = usePathname();
 
   const getCurrentStep = () => {
-    if (!activeFlow) return 1;
+    // Default to Core flow if none selected
+    const currentFlow = activeFlow || 'Core';
     const path = pathname === '/' ? '' : pathname;
-    return flowPaths[activeFlow].findIndex(p => p === path) + 1;
+    return flowPaths[currentFlow].steps.findIndex(p => p === path) + 1;
   };
 
   const getNextPath = () => {
-    if (!activeFlow) {
-      // Default flow if none selected
-      return '/location';
-    }
-
+    // Default to Core flow if none selected
+    const currentFlow = activeFlow || 'Core';
     const currentPath = pathname === '/' ? '' : pathname;
-    const currentPathIndex = flowPaths[activeFlow].findIndex(p => p === currentPath);
+    const currentPathIndex = flowPaths[currentFlow].steps.findIndex(p => p === currentPath);
     
     if (currentPathIndex === -1) {
       // If not in flow path, start from beginning
-      return flowPaths[activeFlow][0];
+      return flowPaths[currentFlow].steps[0];
     }
 
     const nextPathIndex = currentPathIndex + 1;
-    if (nextPathIndex >= flowPaths[activeFlow].length) {
+    if (nextPathIndex >= flowPaths[currentFlow].steps.length) {
       // End of flow
       return null;
     }
 
-    return flowPaths[activeFlow][nextPathIndex];
+    return flowPaths[currentFlow].steps[nextPathIndex];
   };
 
   const navigateNext = () => {
