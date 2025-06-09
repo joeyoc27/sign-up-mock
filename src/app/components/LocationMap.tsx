@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript } from '@react-google-maps/api';
+import type { Libraries } from '@react-google-maps/api';
 
-// Add console log to check API key
-console.log('API Key available:', !!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
-console.log('API Key length:', process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.length);
+// Define libraries as a constant outside the component
+const libraries: Libraries = ['places'];
 
 const DEFAULT_CENTER = {
   lat: 40.7128,
@@ -47,24 +47,40 @@ export default function LocationMap({ selectedAddress }: LocationMapProps) {
   const [error, setError] = useState<string | null>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
   const geocoderRef = useRef<google.maps.Geocoder | null>(null);
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
-    libraries: ['places']
+    libraries: libraries
   });
 
   const onLoad = useCallback((map: google.maps.Map) => {
     mapRef.current = map;
     geocoderRef.current = new google.maps.Geocoder();
+    
+    // Create AdvancedMarkerElement
+    if (window.google) {
+      const { AdvancedMarkerElement } = google.maps.marker;
+      markerRef.current = new AdvancedMarkerElement({
+        map,
+        position: currentLocation,
+        title: selectedAddress || 'Current Location'
+      });
+    }
+    
     setIsLoading(false);
-  }, []);
+  }, [currentLocation, selectedAddress]);
 
   const onUnmount = useCallback(() => {
+    if (markerRef.current) {
+      markerRef.current.map = null;
+    }
     mapRef.current = null;
     geocoderRef.current = null;
+    markerRef.current = null;
   }, []);
 
-  // Update map center when address changes
+  // Update map center and marker when address changes
   useEffect(() => {
     const updateMapLocation = async () => {
       if (!mapRef.current || !geocoderRef.current || !selectedAddress) return;
@@ -83,6 +99,12 @@ export default function LocationMap({ selectedAddress }: LocationMapProps) {
           setCurrentLocation(location);
           mapRef.current.panTo(location);
           mapRef.current.setZoom(14);
+
+          // Update marker position
+          if (markerRef.current) {
+            markerRef.current.position = location;
+          }
+
           setError(null);
         } else {
           setError('Could not find the location. Please try a different address.');
@@ -135,12 +157,7 @@ export default function LocationMap({ selectedAddress }: LocationMapProps) {
         options={defaultOptions}
         onLoad={onLoad}
         onUnmount={onUnmount}
-      >
-        <Marker
-          position={currentLocation}
-          title={selectedAddress || 'Current Location'}
-        />
-      </GoogleMap>
+      />
 
       {/* Loading Overlay */}
       {isLoading && (
