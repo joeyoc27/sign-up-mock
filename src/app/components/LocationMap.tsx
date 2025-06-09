@@ -4,8 +4,9 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import type { Libraries } from '@react-google-maps/api';
 
-// Define libraries as a constant outside the component
-const libraries: Libraries = ['places', 'marker'] as Libraries;
+// Move libraries outside of the component and the file scope
+// This ensures it's only created once and never recreated
+const LIBRARIES: Libraries = ['places'];
 
 const DEFAULT_CENTER = {
   lat: 40.7128,
@@ -47,24 +48,35 @@ export default function LocationMap({ selectedAddress }: LocationMapProps) {
   const [error, setError] = useState<string | null>(null);
   const mapRef = useRef<google.maps.Map | null>(null);
   const geocoderRef = useRef<google.maps.Geocoder | null>(null);
-  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const markerRef = useRef<any>(null);
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
-    libraries: libraries
+    libraries: LIBRARIES
   });
 
   const onLoad = useCallback(async (map: google.maps.Map) => {
     mapRef.current = map;
     geocoderRef.current = new google.maps.Geocoder();
     
-    // Create AdvancedMarkerElement
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
-    markerRef.current = new AdvancedMarkerElement({
-      map,
-      position: currentLocation,
-      title: selectedAddress || 'Current Location'
-    });
+    try {
+      // Load the marker library
+      const markerLibrary = await google.maps.importLibrary("marker");
+      // Cast to any since the types are not yet available in @types/google.maps
+      const marker = (markerLibrary as any).marker;
+      
+      // Create the marker
+      markerRef.current = new marker.PinElement({
+        map,
+        position: currentLocation,
+        title: selectedAddress || 'Current Location'
+      });
+      
+      // Add the marker to the map
+      map.setCenter(currentLocation);
+    } catch (err) {
+      console.error('Error creating marker:', err);
+    }
     
     setIsLoading(false);
   }, [currentLocation, selectedAddress]);
@@ -98,7 +110,7 @@ export default function LocationMap({ selectedAddress }: LocationMapProps) {
           mapRef.current.panTo(location);
           mapRef.current.setZoom(14);
 
-          // Update marker position
+          // Update marker position if it exists
           if (markerRef.current) {
             markerRef.current.position = location;
           }
