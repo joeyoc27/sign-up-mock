@@ -5,7 +5,7 @@ import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import type { Libraries } from '@react-google-maps/api';
 
 // Define libraries as a constant outside the component
-const libraries: Libraries = ['places'];
+const libraries: Libraries = ['places', 'marker'] as Libraries;
 
 const DEFAULT_CENTER = {
   lat: 40.7128,
@@ -54,19 +54,17 @@ export default function LocationMap({ selectedAddress }: LocationMapProps) {
     libraries: libraries
   });
 
-  const onLoad = useCallback((map: google.maps.Map) => {
+  const onLoad = useCallback(async (map: google.maps.Map) => {
     mapRef.current = map;
     geocoderRef.current = new google.maps.Geocoder();
     
     // Create AdvancedMarkerElement
-    if (window.google) {
-      const { AdvancedMarkerElement } = google.maps.marker;
-      markerRef.current = new AdvancedMarkerElement({
-        map,
-        position: currentLocation,
-        title: selectedAddress || 'Current Location'
-      });
-    }
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker") as google.maps.MarkerLibrary;
+    markerRef.current = new AdvancedMarkerElement({
+      map,
+      position: currentLocation,
+      title: selectedAddress || 'Current Location'
+    });
     
     setIsLoading(false);
   }, [currentLocation, selectedAddress]);
