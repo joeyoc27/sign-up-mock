@@ -59,6 +59,12 @@ export default function Location() {
     zipCode: ''
   });
 
+  // Calculate the initial height to show the address input
+  const getCollapsedTransform = () => {
+    if (isExpanded) return 'translate-y-0';
+    return 'translate-y-[45%]';  // Show more of the sheet by default
+  };
+
   // Update expanded state when manual mode changes
   useEffect(() => {
     setIsExpanded(isManualMode);
@@ -262,7 +268,7 @@ export default function Location() {
             </div>
 
             {/* Map Section - Full width on mobile, half width on desktop */}
-            <div className="w-full md:w-1/2 relative px-12">
+            <div className="w-full md:w-1/2 relative md:px-12">
               <div className="h-full">
                 <LocationMap selectedAddress={selectedAddress} />
               </div>
@@ -274,7 +280,7 @@ export default function Location() {
         <div
           ref={bottomSheetRef}
           className={`fixed inset-x-0 bottom-0 bg-white rounded-t-3xl shadow-lg transform transition-transform duration-300 ease-in-out md:hidden ${
-            isExpanded ? 'translate-y-0' : 'translate-y-[65%]'
+            getCollapsedTransform()
           }`}
           style={{ transform: getTransform() }}
         >
@@ -289,102 +295,104 @@ export default function Location() {
             <div className="w-12 h-1.5 bg-gray-300 rounded-full mx-auto transition-colors duration-200 hover:bg-gray-400"></div>
           </div>
 
-          <div className={`px-4 ${isExpanded ? 'pb-8' : 'pb-6'} overflow-y-auto h-full`}>
+          <div className={`px-4 ${isExpanded ? 'pb-8' : 'pb-4'} overflow-y-auto h-full`}>
             <h2 className="text-xl font-medium mb-4">Where's your place located?</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              {!isManualMode ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={toggleMode}
-                    className="mb-2 text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2"
-                  >
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM21.41 6.34l-3.75-3.75-2.53 2.54 3.75 3.75 2.53-2.54z" fill="currentColor"/>
-                    </svg>
-                    Enter address manually
-                  </button>
-                  <div className="relative">
-                    <AddressTypeahead onSelect={setSelectedAddress} />
-                  </div>
-                </>
-              ) : (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between mb-2">
+              <div className="space-y-4">
+                {!isManualMode ? (
+                  <>
+                    <div className="relative">
+                      <AddressTypeahead onSelect={setSelectedAddress} />
+                    </div>
                     <button
                       type="button"
                       onClick={toggleMode}
-                      className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2"
+                      className={`text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2 ${isExpanded ? '' : 'mb-2'}`}
                     >
-                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="rotate-180">
-                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM21.41 6.34l-3.75-3.75-2.53 2.54 3.75 3.75 2.53-2.54z" fill="currentColor"/>
                       </svg>
-                      Back to search
+                      Enter address manually
                     </button>
-                  </div>
+                  </>
+                ) : (
                   <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Street address</label>
-                      <input
-                        type="text"
-                        value={manualAddress.street}
-                        onChange={handleManualAddressChange('street')}
-                        placeholder="e.g. 123 Main St"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
+                    <div className="flex items-center justify-between mb-2">
+                      <button
+                        type="button"
+                        onClick={toggleMode}
+                        className="text-blue-600 hover:text-blue-800 font-medium flex items-center gap-2"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="rotate-180">
+                          <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" fill="currentColor"/>
+                        </svg>
+                        Back to search
+                      </button>
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
-                      <input
-                        type="text"
-                        value={manualAddress.country}
-                        onChange={handleManualAddressChange('country')}
-                        placeholder="e.g. United States"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                      <input
-                        type="text"
-                        value={manualAddress.city}
-                        onChange={handleManualAddressChange('city')}
-                        placeholder="e.g. New York"
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Street address</label>
                         <input
                           type="text"
-                          value={manualAddress.state}
-                          onChange={handleManualAddressChange('state')}
-                          placeholder="e.g. NY"
+                          value={manualAddress.street}
+                          onChange={handleManualAddressChange('street')}
+                          placeholder="e.g. 123 Main St"
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">ZIP code</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
                         <input
                           type="text"
-                          value={manualAddress.zipCode}
-                          onChange={handleManualAddressChange('zipCode')}
-                          placeholder="e.g. 10001"
+                          value={manualAddress.country}
+                          onChange={handleManualAddressChange('country')}
+                          placeholder="e.g. United States"
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
+                        <input
+                          type="text"
+                          value={manualAddress.city}
+                          onChange={handleManualAddressChange('city')}
+                          placeholder="e.g. New York"
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
+                          <input
+                            type="text"
+                            value={manualAddress.state}
+                            onChange={handleManualAddressChange('state')}
+                            placeholder="e.g. NY"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">ZIP code</label>
+                          <input
+                            type="text"
+                            value={manualAddress.zipCode}
+                            onChange={handleManualAddressChange('zipCode')}
+                            placeholder="e.g. 10001"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
 
-              <button
-                type="submit"
-                className="w-full rounded-full bg-[#2557a7] py-3 px-8 text-base font-medium text-white hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2"
-              >
-                Next
-              </button>
+                <button
+                  type="submit"
+                  className="w-full rounded-full bg-[#2557a7] py-3 px-8 text-base font-medium text-white hover:bg-[#1e4b8f] focus:outline-none focus:ring-2 focus:ring-[#2557a7] focus:ring-offset-2"
+                >
+                  Next
+                </button>
+              </div>
             </form>
           </div>
         </div>

@@ -17,7 +17,6 @@ const mapContainerStyle = {
   width: '100%',
   height: '100%',
   minHeight: '400px',
-  borderRadius: '8px',
   overflow: 'hidden'
 };
 
@@ -162,6 +161,7 @@ export default function LocationMap({ selectedAddress }: LocationMapProps) {
     <div className="relative w-full h-full bg-gray-100">
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
+        mapContainerClassName="rounded-lg md:rounded-lg md:p-0"
         center={currentLocation}
         zoom={12}
         options={defaultOptions}
