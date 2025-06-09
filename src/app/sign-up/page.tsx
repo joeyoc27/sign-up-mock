@@ -31,8 +31,18 @@ export default function SignUp() {
       {/* Main Content */}
       <div className="flex-1 relative">
         <div className="absolute inset-0 flex">
-          <div className="w-full max-w-xl mx-auto px-6 py-12 overflow-y-auto">
-            <SignUpForm />
+          <div className="flex w-full max-w-[1400px]">
+            {/* Left Section - Form */}
+            <div className="w-full md:w-1/2 px-4 md:px-12 py-6 md:py-12 overflow-y-auto">
+              <div className="max-w-md mx-auto">
+                <SignUpForm />
+              </div>
+            </div>
+
+            {/* Right Section - Image */}
+            <div className="hidden md:block w-1/2 relative overflow-hidden px-12">
+              {/* Add your image content here */}
+            </div>
           </div>
         </div>
       </div>

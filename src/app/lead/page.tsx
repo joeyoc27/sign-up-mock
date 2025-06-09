@@ -42,7 +42,8 @@ export default function Lead() {
       <div className="flex-1 relative">
         <div className="absolute inset-0 flex justify-center">
           <div className="flex w-full max-w-[1400px]">
-            <div className="w-full md:w-1/2 px-6 md:pr-0 md:pl-24 py-6 md:py-8 overflow-y-auto">
+            {/* Left Section - Form */}
+            <div className="w-full md:w-1/2 px-4 md:px-12 py-6 md:py-12 overflow-y-auto">
               <div className="max-w-md mx-auto">
                 <div className="hidden md:block mb-6">
                   <ProgressBar currentStep={getCurrentStep()} totalSteps={totalSteps} />
@@ -152,7 +153,7 @@ export default function Lead() {
             </div>
 
             {/* Right Section - Image */}
-            <div className="hidden md:block w-1/2 relative md:pl-0 md:pr-24">
+            <div className="hidden md:block w-1/2 relative overflow-hidden px-12">
               <Image
                 src="/standout.png"
                 alt="Beautiful vacation home"

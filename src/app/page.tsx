@@ -31,7 +31,7 @@ export default function Home() {
         <div className="absolute inset-0 flex justify-center">
           <div className="flex w-full max-w-[1400px]">
             {/* Left Section - Form */}
-            <div className="w-full md:w-1/2 px-4 md:pr-0 md:pl-24 py-6 md:py-12 overflow-y-auto">
+            <div className="w-full md:w-1/2 px-4 md:px-12 py-6 md:py-12 overflow-y-auto">
               <div className="max-w-md mx-auto">
                 <div className="hidden md:block mb-6 md:mb-8">
                   <ProgressBar currentStep={1} totalSteps={4} />
@@ -45,7 +45,7 @@ export default function Home() {
             </div>
 
             {/* Right Section - House Image */}
-            <div className="hidden md:block w-1/2 relative overflow-hidden md:pl-0 md:pr-24">
+            <div className="hidden md:block w-1/2 relative overflow-hidden px-12">
               <Image
                 src="/databack.png"
                 alt="Beautiful vacation home"

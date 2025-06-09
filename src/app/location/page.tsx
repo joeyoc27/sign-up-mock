@@ -171,8 +171,8 @@ export default function Location() {
       <div className="flex-1 relative">
         <div className="absolute inset-0 flex justify-center">
           <div className="flex w-full max-w-[1400px]">
-            {/* Left Section - Form */}
-            <div className="w-full md:w-1/2 px-6 md:pr-0 md:pl-24 py-6 md:py-12 overflow-y-auto">
+            {/* Left Section - Form (desktop only) */}
+            <div className="hidden md:block w-1/2 px-12 py-6 md:py-12 overflow-y-auto">
               <div className="max-w-md mx-auto">
                 <div className="hidden md:block mb-8">
                   <ProgressBar currentStep={getCurrentStep()} totalSteps={totalSteps} />
@@ -261,8 +261,8 @@ export default function Location() {
               </div>
             </div>
 
-            {/* Right Section - Map */}
-            <div className="hidden md:block w-1/2 relative md:pl-0 md:pr-24">
+            {/* Map Section - Full width on mobile, half width on desktop */}
+            <div className="w-full md:w-1/2 relative px-12">
               <div className="h-full">
                 <LocationMap selectedAddress={selectedAddress} />
               </div>
